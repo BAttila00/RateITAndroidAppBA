@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "777545279058",
+    "firebase_url": "https://rateitandroidappba.firebaseio.com",
+    "project_id": "rateitandroidappba",
+    "storage_bucket": "rateitandroidappba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777545279058:android:2be7eae549abeaba3aa18b",
+        "android_client_info": {
+          "package_name": "hu.bme.aut.android.rateitandroidappba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777545279058-mppp9shjorpv6nvae0c24bfqn46ql367.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.bme.aut.android.rateitandroidappba",
+            "certificate_hash": "771897059e67d5326cb30c8edac856ad426647ce"
+          }
+        },
+        {
+          "client_id": "777545279058-m0630nfp9srto3015nbu2obr9uf3on36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPcMvwfK6bQ_Ebmx2q9YnBnwg22GheFG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777545279058-m0630nfp9srto3015nbu2obr9uf3on36.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
