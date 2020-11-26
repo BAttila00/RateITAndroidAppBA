@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import hu.bme.aut.android.rateitandroidappba.extensions.validateNonEmpty
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -21,17 +22,7 @@ class MainActivity : BaseActivity() {
         btnLogin.setOnClickListener { loginClick() }
     }
 
-    private fun validateForm(): Boolean {
-        if (etEmail.text.isEmpty()) {
-            etEmail.error = "Required"
-            return false
-        }
-        if (etPassword.text.isEmpty()) {
-            etPassword.error = "Required"
-            return false
-        }
-        return true
-    }
+    private fun validateForm() = etEmail.validateNonEmpty() && etPassword.validateNonEmpty()
 
     private fun registerClick() {
         if (!validateForm()) {
