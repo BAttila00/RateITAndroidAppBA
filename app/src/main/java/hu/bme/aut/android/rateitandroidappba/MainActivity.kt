@@ -31,6 +31,8 @@ class MainActivity : BaseActivity() {
 
         showProgressDialog()
 
+
+
         firebaseAuth
             .createUserWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString())
             .addOnSuccessListener { result ->
@@ -63,7 +65,7 @@ class MainActivity : BaseActivity() {
             .addOnSuccessListener {
                 hideProgressDialog()
 
-                //startActivity(Intent(this@MainActivity, PostsActivity::class.java))
+                startActivity(Intent(this@MainActivity, PostsActivity::class.java))
                 finish()
             }
             .addOnFailureListener { exception ->
