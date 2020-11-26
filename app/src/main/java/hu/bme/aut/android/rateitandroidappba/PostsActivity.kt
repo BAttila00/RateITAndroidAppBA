@@ -1,7 +1,9 @@
 package hu.bme.aut.android.rateitandroidappba
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -13,8 +15,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_posts.*
 
-class PostsActivity : AppCompatActivity() {
+//Az osztály implementálja a NavigationView.OnNavigationItemSelectedListener interfészt.
+class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -41,6 +47,8 @@ class PostsActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navView.setNavigationItemSelectedListener(this)     //onCreate() metódusban beregisztráljuk az eseménykezelőt.
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -52,5 +60,19 @@ class PostsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    //Az előírt metódusban elvégezzük a kiléptetést, és a MainActivity-re navigálunk.
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_logout -> {
+                FirebaseAuth.getInstance().signOut()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+        }
+
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return true
     }
 }
