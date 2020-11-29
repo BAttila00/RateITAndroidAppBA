@@ -61,7 +61,8 @@ class MainActivity : BaseActivity() {
         showProgressDialog()
 
         firebaseAuth
-            .signInWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString())
+            //.signInWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString())
+            .signInWithEmailAndPassword("user01@mail.com", "asdasd")
             .addOnSuccessListener {
                 hideProgressDialog()
 
