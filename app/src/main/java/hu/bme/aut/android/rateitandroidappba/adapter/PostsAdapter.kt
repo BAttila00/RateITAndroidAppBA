@@ -22,7 +22,7 @@ class PostsAdapter(private val context: Context) : RecyclerView.Adapter<PostsAda
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.tvTitle
-        val tvAdress: TextView = itemView.tvAdress
+        val tvAdress: TextView = itemView.tvAddress
         val tvPageUrl: TextView = itemView.tvPageUrl
     }
 
@@ -36,7 +36,7 @@ class PostsAdapter(private val context: Context) : RecyclerView.Adapter<PostsAda
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val tmpPost = postList[position]
         viewHolder.tvTitle.text = tmpPost.title
-        viewHolder.tvAdress.text = tmpPost.adress
+        viewHolder.tvAdress.text = tmpPost.address
         viewHolder.tvPageUrl.text = tmpPost.pageUrl
 
         setAnimation(viewHolder.itemView, position)
