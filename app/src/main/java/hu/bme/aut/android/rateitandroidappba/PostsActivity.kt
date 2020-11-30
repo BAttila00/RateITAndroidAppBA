@@ -18,7 +18,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import hu.bme.aut.android.rateitandroidappba.adapter.PostsAdapter
+import hu.bme.aut.android.rateitandroidappba.data.Restaurant
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -62,6 +67,9 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             stackFromEnd = true
         }
         rvPosts.adapter = postsAdapter
+
+
+        initPostsListener()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,5 +95,32 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+
+
+    //adds all elements from database to the recyclerView (and adds listener to ADD, every time we add a restaurant to the database the recycler view updates)
+    private fun initPostsListener() {
+        FirebaseDatabase.getInstance()
+            .getReference("restaurantPosts")                  //get data from restaurantPosts brach of database
+            .addChildEventListener(object : ChildEventListener {
+                //get elements from firebase dataset
+                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+                    val newPost = dataSnapshot.getValue<Restaurant>(Restaurant::class.java)
+                    postsAdapter.addPost(newPost)       //add it to the recyclerView
+                }
+
+                override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+                }
+
+                override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                }
+
+                override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
     }
 }
