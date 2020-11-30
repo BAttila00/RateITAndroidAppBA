@@ -16,13 +16,23 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import hu.bme.aut.android.rateitandroidappba.adapter.PostsAdapter
+import hu.bme.aut.android.rateitandroidappba.data.Restaurant
 import kotlinx.android.synthetic.main.activity_posts.*
+import kotlinx.android.synthetic.main.content_main.*
 
 //Az osztály implementálja a NavigationView.OnNavigationItemSelectedListener interfészt.
 class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private lateinit var postsAdapter: PostsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +41,11 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         setSupportActionBar(toolbar)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+
+        //add restaurant posts button listener
+        fab.setOnClickListener {
+            val createPostIntent = Intent(this, CreatePostActivity::class.java)
+            startActivity(createPostIntent)
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -49,6 +61,17 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         navView.setupWithNavController(navController)
 
         navView.setNavigationItemSelectedListener(this)     //onCreate() metódusban beregisztráljuk az eseménykezelőt.
+
+        //connecting the layout with RecyclerView adapter
+        postsAdapter = PostsAdapter(applicationContext)
+        rvPosts.layoutManager = LinearLayoutManager(this).apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        rvPosts.adapter = postsAdapter
+
+
+        initPostsListener()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,5 +97,32 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+
+
+    //adds all elements from database to the recyclerView (and adds listener to ADD, every time we add a restaurant to the database the recycler view updates)
+    private fun initPostsListener() {
+        FirebaseDatabase.getInstance()
+            .getReference("restaurantPosts")                  //get data from restaurantPosts brach of database
+            .addChildEventListener(object : ChildEventListener {
+                //get elements from firebase dataset
+                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+                    val newPost = dataSnapshot.getValue<Restaurant>(Restaurant::class.java)
+                    postsAdapter.addPost(newPost)       //add it to the recyclerView
+                }
+
+                override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+                }
+
+                override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                }
+
+                override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
     }
 }
