@@ -16,13 +16,18 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import hu.bme.aut.android.rateitandroidappba.adapter.PostsAdapter
 import kotlinx.android.synthetic.main.activity_posts.*
+import kotlinx.android.synthetic.main.content_main.*
 
 //Az osztály implementálja a NavigationView.OnNavigationItemSelectedListener interfészt.
 class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private lateinit var postsAdapter: PostsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,14 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         navView.setupWithNavController(navController)
 
         navView.setNavigationItemSelectedListener(this)     //onCreate() metódusban beregisztráljuk az eseménykezelőt.
+
+        //connecting the layout with RecyclerView adapter
+        postsAdapter = PostsAdapter(applicationContext)
+        rvPosts.layoutManager = LinearLayoutManager(this).apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        rvPosts.adapter = postsAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

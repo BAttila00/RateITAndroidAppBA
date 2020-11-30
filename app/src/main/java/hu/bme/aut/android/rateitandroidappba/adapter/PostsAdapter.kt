@@ -1,3 +1,5 @@
+//adapter of recyclerView (id=rvPosts)
+
 package hu.bme.aut.android.rateitandroidappba.adapter
 
 import android.content.Context
