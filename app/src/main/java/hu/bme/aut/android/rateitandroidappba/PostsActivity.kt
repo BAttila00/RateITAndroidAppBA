@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -17,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -28,7 +31,8 @@ import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_main.*
 
 //Az osztály implementálja a NavigationView.OnNavigationItemSelectedListener interfészt.
-class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    PostsAdapter.RestaurantItemClickListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -68,10 +72,12 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             reverseLayout = true
             stackFromEnd = true
         }
+
+        postsAdapter.itemClickListener = this
         rvPosts.adapter = postsAdapter
 
-
         initPostsListener()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -124,5 +130,9 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 override fun onCancelled(databaseError: DatabaseError) {
                 }
             })
+    }
+
+    override fun onItemClick(restaurant: Restaurant) {
+        Toast.makeText(applicationContext,"Navigate to restaurant layout",Toast.LENGTH_SHORT).show()
     }
 }
