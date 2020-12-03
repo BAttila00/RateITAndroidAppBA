@@ -133,6 +133,11 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onItemClick(restaurant: Restaurant) {
-        Toast.makeText(applicationContext,"Navigate to restaurant layout",Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, RestaurantDetail::class.java)
+        intent.putExtra(RestaurantDetail.KEY_TITTLE, restaurant.title)
+        intent.putExtra(RestaurantDetail.KEY_ADDRESS, restaurant.address)
+        intent.putExtra(RestaurantDetail.KEY_URL, restaurant.pageUrl)
+        startActivity(intent)
+        //Toast.makeText(applicationContext,"Navigate to restaurant layout",Toast.LENGTH_SHORT).show()
     }
 }
