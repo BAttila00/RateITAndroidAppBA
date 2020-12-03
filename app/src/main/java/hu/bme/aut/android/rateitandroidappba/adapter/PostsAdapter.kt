@@ -3,6 +3,7 @@
 package hu.bme.aut.android.rateitandroidappba.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +21,25 @@ class PostsAdapter(private val context: Context) : RecyclerView.Adapter<PostsAda
     private val postList: MutableList<Restaurant> = mutableListOf()
     private var lastPosition = -1
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var itemClickListener: RestaurantItemClickListener? = null
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.tvTitle
         val tvAdress: TextView = itemView.tvAddress
         val tvPageUrl: TextView = itemView.tvPageUrl
+
+        //dont forget to initalize it in onBindViewHolder with viewHolder.restaurant = tmpPost
+        var restaurant: Restaurant? = null
+        //var restaurant: Restaurant = Restaurant()
+
+        init {
+            itemView.setOnClickListener {
+                if (restaurant != null) Log.d("TAG", "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg")
+                else Log.d("TAG", "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo")
+                restaurant?.let { restaurant -> itemClickListener?.onItemClick(restaurant) }
+                //itemClickListener?.onItemClick(restaurant)
+            }
+        }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -34,7 +50,9 @@ class PostsAdapter(private val context: Context) : RecyclerView.Adapter<PostsAda
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+
         val tmpPost = postList[position]
+        viewHolder.restaurant = tmpPost             //dont forget this, otherwise var restaurant: Restaurant? = null will remain null and u wont have a clickListener (it's in "class ViewHolder(itemView: View)")
         viewHolder.tvTitle.text = tmpPost.title
         viewHolder.tvAdress.text = tmpPost.address
         viewHolder.tvPageUrl.text = tmpPost.pageUrl
@@ -57,6 +75,10 @@ class PostsAdapter(private val context: Context) : RecyclerView.Adapter<PostsAda
             viewToAnimate.startAnimation(animation)
             lastPosition = position
         }
+    }
+
+    interface RestaurantItemClickListener {
+        fun onItemClick(restaurant: Restaurant)
     }
 
 }
