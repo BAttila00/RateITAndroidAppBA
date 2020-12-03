@@ -1,11 +1,17 @@
 package hu.bme.aut.android.rateitandroidappba
 
+import android.app.SearchManager
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_restaurant_detail.*
+import kotlinx.android.synthetic.main.nav_header_main.*
+
 
 class RestaurantDetail : AppCompatActivity() {
 
@@ -29,5 +35,33 @@ class RestaurantDetail : AppCompatActivity() {
         fab.setOnClickListener {
             Toast.makeText(applicationContext,"fab pushed",Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun onClickTitle(view: View) {
+        val textView: TextView = view as TextView
+        val str: String = textView.text.toString()
+        //Toast.makeText(applicationContext,str,Toast.LENGTH_SHORT).show()
+        val intent = Intent(Intent.ACTION_WEB_SEARCH)
+        intent.putExtra(SearchManager.QUERY, str)
+        startActivity(intent)
+    }
+
+    fun onClickAddress(view: View) {
+        //val intentUri = Uri.parse("geo:0,0?q=Budapest, Magyar Tudósok Körútja 2, 1117")
+        val textView: TextView = view as TextView
+        val str: String = textView.text.toString()
+        val intentUri = Uri.parse("geo:0,0?q=${str}")
+        val mapIntent = Intent(Intent.ACTION_VIEW, intentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
+    }
+
+    fun onClickUrl(view: View) {
+        //val intentUri = Uri.parse("http://www.stackoverflow.com")
+        val textView: TextView = view as TextView
+        val str: String = textView.text.toString()
+        val intentUri = Uri.parse(str)
+        val urlIntent = Intent(Intent.ACTION_VIEW, intentUri)
+        startActivity(urlIntent)
     }
 }
