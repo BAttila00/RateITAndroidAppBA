@@ -31,7 +31,7 @@ class CreatePostActivity : BaseActivity() {
 
     private fun uploadPost(imageUrl: String? = null) {
         val key = FirebaseDatabase.getInstance().reference.child("restaurantPosts").push().key ?: return
-        val newPost = Restaurant(uid, etTitle.text.toString(), etAddress.text.toString(),  etPageUrl.text.toString())
+        val newPost = Restaurant(key, uid, etTitle.text.toString(), etAddress.text.toString(),  etPageUrl.text.toString())
 
         FirebaseDatabase.getInstance().reference
             .child("restaurantPosts")
