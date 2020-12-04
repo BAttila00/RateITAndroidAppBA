@@ -2,6 +2,7 @@ package hu.bme.aut.android.rateitandroidappba
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -115,7 +116,10 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 //get elements from firebase dataset
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     val newPost = dataSnapshot.getValue<Restaurant>(Restaurant::class.java)
+                    //Log.d("TAG", "------------------------${newPost?.title}---------------------------")
+                    //if(newPost?.title!! == "a01")
                     postsAdapter.addPost(newPost)       //add it to the recyclerView
+
                 }
 
                 override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
