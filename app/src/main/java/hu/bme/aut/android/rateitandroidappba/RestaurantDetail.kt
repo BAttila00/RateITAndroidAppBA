@@ -19,6 +19,7 @@ class RestaurantDetail : AppCompatActivity() {
         const val KEY_TITTLE = "KEY_TITTLE"
         const val KEY_ADDRESS = "KEY_ADDRESS"
         const val KEY_URL = "KEY_URL"
+        const val KEY_RESTAURANT_ID = "RESTAURANT_ID"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +34,12 @@ class RestaurantDetail : AppCompatActivity() {
 
         //add restaurant posts button listener
         fab.setOnClickListener {
-            Toast.makeText(applicationContext,"fab pushed",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(applicationContext,"fab pushed",Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this, CreateReviewActivity::class.java)
+            intent.putExtra(CreateReviewActivity.RESTAURANT_ID, intent.getStringExtra(KEY_RESTAURANT_ID))
+            startActivity(intent)
+
         }
     }
 

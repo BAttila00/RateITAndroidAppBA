@@ -12,6 +12,11 @@ import kotlinx.android.synthetic.main.activity_create_review.*
 import kotlinx.android.synthetic.main.activity_create_review.btnSend
 
 class CreateReviewActivity : BaseActivity() {
+
+    companion object {
+        const val RESTAURANT_ID = "RESTAURANT_ID"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_review)

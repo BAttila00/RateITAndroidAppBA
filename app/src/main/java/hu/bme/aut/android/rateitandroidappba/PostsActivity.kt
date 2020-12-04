@@ -141,6 +141,7 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         intent.putExtra(RestaurantDetail.KEY_TITTLE, restaurant.title)
         intent.putExtra(RestaurantDetail.KEY_ADDRESS, restaurant.address)
         intent.putExtra(RestaurantDetail.KEY_URL, restaurant.pageUrl)
+        intent.putExtra(RestaurantDetail.KEY_RESTAURANT_ID, restaurant.id)
         startActivity(intent)
         //Toast.makeText(applicationContext,"Navigate to restaurant layout",Toast.LENGTH_SHORT).show()
     }
