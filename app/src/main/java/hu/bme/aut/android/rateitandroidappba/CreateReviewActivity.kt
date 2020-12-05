@@ -5,16 +5,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.database.FirebaseDatabase
-import hu.bme.aut.android.rateitandroidappba.data.Restaurant
+import hu.bme.aut.android.rateitandroidappba.data.Review
 import hu.bme.aut.android.rateitandroidappba.extensions.validateNonEmpty
 import kotlinx.android.synthetic.main.activity_create_post.*
+import kotlinx.android.synthetic.main.activity_create_review.*
+import kotlinx.android.synthetic.main.activity_create_review.btnSend
 
-class CreatePostActivity : BaseActivity() {
+class CreateReviewActivity : BaseActivity() {
 
+    companion object {
+        const val RESTAURANT_ID = "RESTAURANT_ID"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_post)
+        setContentView(R.layout.activity_create_review)
 
         btnSend.setOnClickListener { sendClick() }
     }
@@ -27,20 +32,19 @@ class CreatePostActivity : BaseActivity() {
         uploadPost()
     }
 
-    private fun validateForm() = etTitle.validateNonEmpty() && etAddress.validateNonEmpty()
+    private fun validateForm() = etReviewText.validateNonEmpty()
 
-    private fun uploadPost(imageUrl: String? = null) {
-        //generates a key
-        val key = FirebaseDatabase.getInstance().reference.child("restaurantPosts").push().key ?: return
-        val newPost = Restaurant(key, uid, etTitle.text.toString(), etAddress.text.toString(),  etPageUrl.text.toString())
+    private fun uploadPost() {
+        val key = FirebaseDatabase.getInstance().reference.child("reviews").push().key ?: return
+        val newReview = Review(key, uid, userName, intent.getStringExtra(RESTAURANT_ID), etReviewText.text.toString())
 
-        //create a child element in "restaurantPosts" with "key" and under itt add the new restaurant item
+        //create a child element in "reviews" with "key" and under itt add the new review item
         FirebaseDatabase.getInstance().reference
-            .child("restaurantPosts")
+            .child("reviews")
             .child(key)
-            .setValue(newPost)
+            .setValue(newReview)
             .addOnCompleteListener {
-                toast("Restaurant post created")
+                toast("Your review was added")
                 finish()
             }
     }
@@ -51,5 +55,4 @@ class CreatePostActivity : BaseActivity() {
             return
         }
     }
-
 }

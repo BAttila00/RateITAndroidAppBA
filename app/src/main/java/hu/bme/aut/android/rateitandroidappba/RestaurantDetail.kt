@@ -8,8 +8,16 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import hu.bme.aut.android.rateitandroidappba.adapter.ReviewsAdapter
+import hu.bme.aut.android.rateitandroidappba.data.Review
 import kotlinx.android.synthetic.main.activity_restaurant_detail.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 
@@ -19,7 +27,10 @@ class RestaurantDetail : AppCompatActivity() {
         const val KEY_TITTLE = "KEY_TITTLE"
         const val KEY_ADDRESS = "KEY_ADDRESS"
         const val KEY_URL = "KEY_URL"
+        const val KEY_RESTAURANT_ID = "RESTAURANT_ID"
     }
+
+    private lateinit var reviewsAdapter: ReviewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +44,21 @@ class RestaurantDetail : AppCompatActivity() {
 
         //add restaurant posts button listener
         fab.setOnClickListener {
-            Toast.makeText(applicationContext,"fab pushed",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(applicationContext,"fab pushed",Toast.LENGTH_SHORT).show()
+
+            val intentval = Intent(this, CreateReviewActivity::class.java)
+            intentval.putExtra(CreateReviewActivity.RESTAURANT_ID, intent.getStringExtra(KEY_RESTAURANT_ID))
+            startActivity(intentval)
+
         }
+
+        reviewsAdapter = ReviewsAdapter(applicationContext)
+        rvReviews.layoutManager = LinearLayoutManager(this).apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        rvReviews.adapter = reviewsAdapter
+        initPostsListener()
     }
 
     fun onClickTitle(view: View) {
@@ -63,5 +87,35 @@ class RestaurantDetail : AppCompatActivity() {
         val intentUri = Uri.parse(str)
         val urlIntent = Intent(Intent.ACTION_VIEW, intentUri)
         startActivity(urlIntent)
+    }
+
+
+    private fun initPostsListener() {
+        //every time "reviews" "database" child elements gets updatet this is going to be notified
+        FirebaseDatabase.getInstance()
+            .getReference("reviews")                                    //get data from reviews brach of database
+            .addChildEventListener(object : ChildEventListener {            //every time "reviews" "database" child elements gets updatet this is going to be notified
+                //get elements from firebase dataset
+                //if u add a child to "reviews" this runs
+                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+                    val newReview = dataSnapshot.getValue<Review>(Review::class.java)
+                    //Log.d("TAG", "------------------------${newPost?.title}---------------------------")
+                    if(newReview?.restaurantID!! == intent.getStringExtra(KEY_RESTAURANT_ID))       //add review to recyclerView list only if it belongs to the current restaurant
+                        reviewsAdapter.addReview(newReview)       //add it to the recyclerView
+
+                }
+
+                override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+                }
+
+                override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                }
+
+                override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
     }
 }

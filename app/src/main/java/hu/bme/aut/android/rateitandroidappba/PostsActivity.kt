@@ -2,6 +2,7 @@ package hu.bme.aut.android.rateitandroidappba
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -111,11 +112,14 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private fun initPostsListener() {
         FirebaseDatabase.getInstance()
             .getReference("restaurantPosts")                  //get data from restaurantPosts brach of database
-            .addChildEventListener(object : ChildEventListener {
+            .addChildEventListener(object : ChildEventListener {    //every time "restaurantPosts" "database" child elements gets updatet this is going to be notified
                 //get elements from firebase dataset
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     val newPost = dataSnapshot.getValue<Restaurant>(Restaurant::class.java)
+                    //Log.d("TAG", "------------------------${newPost?.title}---------------------------")
+                    //if(newPost?.title!! == "a01")
                     postsAdapter.addPost(newPost)       //add it to the recyclerView
+
                 }
 
                 override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
@@ -133,10 +137,13 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onItemClick(restaurant: Restaurant) {
+
+        //start the new activity, pass it some parameters
         val intent = Intent(this, RestaurantDetail::class.java)
         intent.putExtra(RestaurantDetail.KEY_TITTLE, restaurant.title)
         intent.putExtra(RestaurantDetail.KEY_ADDRESS, restaurant.address)
         intent.putExtra(RestaurantDetail.KEY_URL, restaurant.pageUrl)
+        intent.putExtra(RestaurantDetail.KEY_RESTAURANT_ID, restaurant.id)
         startActivity(intent)
         //Toast.makeText(applicationContext,"Navigate to restaurant layout",Toast.LENGTH_SHORT).show()
     }

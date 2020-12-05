@@ -55,7 +55,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRestaurantAddress" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rvReviews"
         android:layout_width="409dp"
         android:layout_height="563dp"
         app:layout_constraintBottom_toTopOf="@+id/fab"
