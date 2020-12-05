@@ -89,11 +89,14 @@ class RestaurantDetail : AppCompatActivity() {
         startActivity(urlIntent)
     }
 
+
     private fun initPostsListener() {
+        //every time "reviews" "database" child elements gets updatet this is going to be notified
         FirebaseDatabase.getInstance()
-            .getReference("reviews")                  //get data from reviews brach of database
-            .addChildEventListener(object : ChildEventListener {
+            .getReference("reviews")                                    //get data from reviews brach of database
+            .addChildEventListener(object : ChildEventListener {            //every time "reviews" "database" child elements gets updatet this is going to be notified
                 //get elements from firebase dataset
+                //if u add a child to "reviews" this runs
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     val newReview = dataSnapshot.getValue<Review>(Review::class.java)
                     //Log.d("TAG", "------------------------${newPost?.title}---------------------------")

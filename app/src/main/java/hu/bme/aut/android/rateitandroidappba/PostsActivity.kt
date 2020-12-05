@@ -112,7 +112,7 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private fun initPostsListener() {
         FirebaseDatabase.getInstance()
             .getReference("restaurantPosts")                  //get data from restaurantPosts brach of database
-            .addChildEventListener(object : ChildEventListener {
+            .addChildEventListener(object : ChildEventListener {    //every time "restaurantPosts" "database" child elements gets updatet this is going to be notified
                 //get elements from firebase dataset
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     val newPost = dataSnapshot.getValue<Restaurant>(Restaurant::class.java)
@@ -137,6 +137,8 @@ class PostsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onItemClick(restaurant: Restaurant) {
+
+        //start the new activity, pass it some parameters
         val intent = Intent(this, RestaurantDetail::class.java)
         intent.putExtra(RestaurantDetail.KEY_TITTLE, restaurant.title)
         intent.putExtra(RestaurantDetail.KEY_ADDRESS, restaurant.address)

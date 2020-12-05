@@ -38,6 +38,7 @@ class CreateReviewActivity : BaseActivity() {
         val key = FirebaseDatabase.getInstance().reference.child("reviews").push().key ?: return
         val newReview = Review(key, uid, userName, intent.getStringExtra(RESTAURANT_ID), etReviewText.text.toString())
 
+        //create a child element in "reviews" with "key" and under itt add the new review item
         FirebaseDatabase.getInstance().reference
             .child("reviews")
             .child(key)
