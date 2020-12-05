@@ -36,7 +36,7 @@ class CreateReviewActivity : BaseActivity() {
 
     private fun uploadPost() {
         val key = FirebaseDatabase.getInstance().reference.child("reviews").push().key ?: return
-        val newReview = Review(key, uid, userName, "restaurantID", etReviewText.text.toString())
+        val newReview = Review(key, uid, userName, intent.getStringExtra(RESTAURANT_ID), etReviewText.text.toString())
 
         FirebaseDatabase.getInstance().reference
             .child("reviews")

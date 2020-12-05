@@ -38,4 +38,11 @@ class ReviewsAdapter(private val context: Context) : RecyclerView.Adapter<Review
 
     override fun getItemCount() = reviewList.size
 
+    fun addReview(review: Review?) {
+        review ?: return
+
+        reviewList.add(review)
+        notifyDataSetChanged()
+    }
+
 }
