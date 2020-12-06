@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.review_post.view.*
 class ReviewsAdapter(private val context: Context) : RecyclerView.Adapter<ReviewsAdapter.ViewHolder>() {
 
     private val reviewList: MutableList<Review> = mutableListOf()
-    private var lastPosition = -1
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvUserName: TextView = itemView.tvUserName

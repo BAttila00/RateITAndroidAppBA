@@ -30,7 +30,7 @@ class CreatePostActivity : BaseActivity() {
     private fun validateForm() = etTitle.validateNonEmpty() && etAddress.validateNonEmpty()
 
     private fun uploadPost(imageUrl: String? = null) {
-        //generates a key
+        //generates a key (adds a new child element to "restaurantPosts" branch and retrieves its key)
         val key = FirebaseDatabase.getInstance().reference.child("restaurantPosts").push().key ?: return
         val newPost = Restaurant(key, uid, etTitle.text.toString(), etAddress.text.toString(),  etPageUrl.text.toString())
 

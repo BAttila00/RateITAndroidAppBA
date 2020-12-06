@@ -35,6 +35,7 @@ class CreateReviewActivity : BaseActivity() {
     private fun validateForm() = etReviewText.validateNonEmpty()
 
     private fun uploadPost() {
+        //generates a key (adds a new child element to "reviews" branch and retrieves its key)
         val key = FirebaseDatabase.getInstance().reference.child("reviews").push().key ?: return
         val newReview = Review(key, uid, userName, intent.getStringExtra(RESTAURANT_ID), etReviewText.text.toString())
 
